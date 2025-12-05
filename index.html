@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đang tải dữ liệu...</title> 
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000; /* Màn hình đen hoặc màu gì bạn thích */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            cursor: pointer; /* Biến con chuột thành hình bàn tay để kích thích click */
+            overflow: hidden;
+        }
+
+        #message {
+            font-size: 20px;
+            text-align: center;
+        }
+
+        /* Ẩn thanh phát nhạc đi */
+        audio {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="message">
+        <h1>Hệ thống đang xử lý...</h1>
+        <p>(Chạm vào màn hình để tiếp tục)</p>
+    </div>
+
+    <audio id="trollAudio" src="sound.mp3" loop></audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('trollAudio');
+            
+            // Hàm phát nhạc và tăng max volume
+            function playSound() {
+                // Set âm lượng của thẻ audio lên 100% (1.0)
+                // Lưu ý: JS không thể can thiệp vào volume hệ thống (loa máy tính)
+                audio.volume = 1.0; 
+                
+                audio.play().then(() => {
+                    console.log("Đã phát âm thanh");
+                    // Ẩn dòng chữ đi hoặc đổi màu nền để hù dọa (tuỳ chọn)
+                    // document.body.style.backgroundColor = "red"; 
+                }).catch(error => {
+                    console.log("Chưa phát được do chính sách trình duyệt: " + error);
+                });
+            }
+
+            // 1. Thử phát ngay khi vào web (Thường sẽ bị chặn bởi Chrome/Safari)
+            playSound();
+
+            // 2. Bắt sự kiện click bất kỳ đâu trên body để phát
+            document.body.addEventListener('click', function() {
+                playSound();
+            });
+
+            // 3. Bắt sự kiện chạm (cho điện thoại)
+            document.body.addEventListener('touchstart', function() {
+                playSound();
+            });
+            
+            // 4. Bắt sự kiện di chuột (ít nhạy hơn nhưng cũng có thể dùng)
+            document.body.addEventListener('mousemove', function() {
+                 // Một số trình duyệt yêu cầu click thật sự, mousemove có thể không tính là tương tác đủ mạnh
+                 // Nhưng cứ để đây cho chắc
+                 // playSound(); 
+            });
+        });
+    </script>
+</body>
+</html>
